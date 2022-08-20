@@ -12,4 +12,4 @@ git clone https://github.com/Naikod/API-JADWAL-MOKLET
 cd API-JADWAL-MOKLET
 node index
 ```
-# Bakal muncul output pada saat jam pembelajaran, untuk hari libur bakal muncul `Tidak ada pelajaran saat ini` saja.
+### Bakal muncul output pada saat jam pembelajaran, untuk hari libur bakal muncul `Tidak ada pelajaran saat ini` saja.
