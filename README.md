@@ -7,6 +7,7 @@
 ```git
 npm init
 npm i node-fetch@2.6.1
+npm i readline-sync
 git clone https://github.com/Naikod/JADWAL-API-MOKLET
 node index
 ```
