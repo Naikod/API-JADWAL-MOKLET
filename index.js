@@ -50,8 +50,10 @@ function hariApa(intday) {
 }
 
 const fetch = require('node-fetch');
+const rs = require('readline-sync');
+const kelas = rs.question("Project by: Ridwan XRPL6\nMasukkan Kelas anda dengan format contoh XRPL7/XITKJ2\n>>")
 setInterval(() => {
-const GoStumble = (auth) => new Promise((resolve, reject) => {
+const GetData = () => new Promise((resolve, reject) => {
 
   fetch('https://siswa.smktelkom-mlg.sch.id/jadwal_pelajaran_xls/jadwal', {
       method: 'GET'
@@ -67,7 +69,7 @@ const GoStumble = (auth) => new Promise((resolve, reject) => {
 });
 
 (async () => {
-      const result = await GoStumble();
+      const result = await GetData();
       console.clear()
       if (!result) {
 
@@ -80,10 +82,10 @@ const GoStumble = (auth) => new Promise((resolve, reject) => {
           const d = new Date();
           let intday = 5;        
           const filters = dtngajar.find((currentElement) => {
-            return currentElement.class === "XRPL6" && currentElement.hour === JamBRP() && currentElement.day === hariApa(intday);
+            return currentElement.class === kelas && currentElement.hour === JamBRP() && currentElement.day === hariApa(intday);
           });
           const nextPelajaran = dtngajar.find((currentElement) => {
-            return currentElement.class === "XRPL6" && currentElement.hour === JamBRP() && currentElement.day === hariApa(intday);
+            return currentElement.class === kelas && currentElement.hour === JamBRP() && currentElement.day === hariApa(intday);
           });
           if(!filters) {
             if(nextPelajaran) {
@@ -109,4 +111,4 @@ const GoStumble = (auth) => new Promise((resolve, reject) => {
               }
           }
                 }
-})();}, 10000)
+})();}, 3000)
