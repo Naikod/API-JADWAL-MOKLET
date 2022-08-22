@@ -1,32 +1,40 @@
 function JamBRP() {
   let timenow = new Date()
-  let SECNOW = Math.floor(timenow.getTime()/1000)
+  let SECNOW = Math.floor(timenow.getTime())
   let year = timenow.getFullYear();
   let day = timenow.getDate();
   let monet = timenow.getMonth()
-  let timeprog = new Date(year, monet, day, 6, 15)
+  let timeprog = new Date(year, monet, day, 6, 15, 0, 0)
   let sectimepro = Math.floor(timeprog.getTime()/1000)
-  let jam = [(sectimepro*1000)+2700000*1, (sectimepro*1000)+2700000*2, (sectimepro*1000)+2700000*3, (sectimepro*1000)+2700000*4, (sectimepro*1000)+2700000*5, (sectimepro*1000)+2700000*6, (sectimepro*1000)+2700000*7, (sectimepro*1000)+2700000*8, (sectimepro*1000)+2700000*9, (sectimepro*1000)+2700000*10]
-  let testtime = new Date(jam[0])
-  if(jam[0]<=SECNOW) {
+  let jam = [(sectimepro*1000)+2700000*1, //akhir jam 1
+             (sectimepro*1000)+2700000*2, //akhir jam 2
+             (sectimepro*1000)+2700000*3, //akhir jam 3
+             (sectimepro*1000)+1800000+2700000*4, //akhir jam 4
+             (sectimepro*1000)+1800000+2700000*5, //akhir jam 5
+             (sectimepro*1000)+1800000+2700000*6, //akhir jam 6
+             (sectimepro*1000)+1800000+2700000*8, //akhir jam 7
+             (sectimepro*1000)+1800000+2700000*9, //akhir jam 8
+             (sectimepro*1000)+1800000+2700000*10, //akhir jam 9
+             (sectimepro*1000)+1800000+2700000*11] //akhir jam 10
+  if(SECNOW<=jam[0]) {
       return "1"
-  } else if(jam[1]<=SECNOW) {
+  } else if(SECNOW<=jam[1]) {
       return "2"
-  } else if(jam[2]<=SECNOW) {
+  } else if(SECNOW<=jam[2]) {
       return "3"
-  } else if(jam[3]<=SECNOW) {
+  } else if(SECNOW<=jam[3]) {
       return "4"
-  } else if(jam[4]<=SECNOW) {
+  } else if(SECNOW<=jam[4]) {
       return "5"
-  } else if(jam[5]<=SECNOW) {
+  } else if(SECNOW<=jam[5]) {
       return "6"
-  } else if(jam[6]<=SECNOW) {
+  } else if(SECNOW<=jam[6]) {
       return "7"
-  } else if(jam[7]<=SECNOW) {
+  } else if(SECNOW<=jam[7]) {
       return "8"
-  } else if(jam[8]<=SECNOW) {
+  } else if(SECNOW<=jam[8]) {
       return "9"
-  } else if(jam[9]<=SECNOW) {
+  } else if(SECNOW<=jam[9]) {
       return "10"
   } else {
       return "0"
@@ -35,7 +43,7 @@ function hariApa(intday) {
   if (intday == 0) {
     return "Sunday"
   } else if (intday == 1) {
-    return "Monay"
+    return "Monday"
   } else if (intday == 2) {
     return "Tuesday"
   } else if (intday == 3) {
@@ -51,7 +59,7 @@ function hariApa(intday) {
 
 const fetch = require('node-fetch');
 const rs = require('readline-sync');
-const kelas = rs.question("Project by: Ridwan XRPL6\nMasukkan Kelas anda dengan format contoh XRPL7/XITKJ2\n>>")
+const kelas = rs.question("[Note] > Program akan terefresh setiap 1 Menit\nProject by: Ridwan XRPL6\nMasukkan Kelas anda dengan format contoh XRPL7/XITKJ2\n>>")
 setInterval(() => {
 const GetData = () => new Promise((resolve, reject) => {
 
@@ -80,18 +88,24 @@ const GetData = () => new Promise((resolve, reject) => {
           const data = JSON.parse(result);
           const dtngajar = data.dt_mengajar;
           const d = new Date();
-          let intday = 5;        
+          let intday = d.getDay();        
           const filters = dtngajar.find((currentElement) => {
             return currentElement.class === kelas && currentElement.hour === JamBRP() && currentElement.day === hariApa(intday);
           });
           const nextPelajaran = dtngajar.find((currentElement) => {
-            return currentElement.class === kelas && currentElement.hour === JamBRP() && currentElement.day === hariApa(intday);
+            const jame = JamBRP()
+            const intjam = parseInt(jame)
+            const tambahan1 = intjam+1
+            const nextjam = tambahan1.toString()
+            const nextHour = nextjam
+            
+            return currentElement.class === kelas && currentElement.hour === nextHour && currentElement.day === hariApa(intday);
           });
           if(!filters) {
             if(nextPelajaran) {
-              console.log(`${nextPelajaran.class}\nJADWAL HARI    :${nextPelajaran.day} - ${nextPelajaran.hour-1}\nMata Pelajaran : Tidak ada mata pelajaran saat ini\nMata Pelajaran selanjutnya: ${nextPelajaran.subject} - ${nextPelajaran.teacher}\n\n`)
+              console.log(`\n\n${nextPelajaran.class}\nJADWAL HARI    :${nextPelajaran.day} - ${nextPelajaran.hour-1}\nMata Pelajaran : Tidak ada mata pelajaran saat ini\nMata Pelajaran selanjutnya: ${nextPelajaran.subject} - ${nextPelajaran.teacher}\n\n`)
             } else {  
-              console.log("Tidak ada pelajaran saat ini")
+              console.log(`\n\nTidak ada pelajaran saat ini\n\n`)
             }
           } else if(filters) {
               if (filters) {
@@ -105,10 +119,10 @@ const GetData = () => new Promise((resolve, reject) => {
               if (nextPelajaran) {
                 const n_mapel = nextPelajaran.subject;
                 const n_guru = nextPelajaran.teacher;
-                console.log(`Pelajaran Selanjutnya: ${n_mapel} - ${n_guru}\n`)
+                console.log(`Pelajaran Selanjutnya: ${n_mapel} - ${n_guru}\n\n`)
               } else {
                 console.log(`Pelajaran Selanjutnya: Tidak ada mata pelajaran\n\n`)
               }
           }
                 }
-})();}, 3000)
+})();}, 60000)
