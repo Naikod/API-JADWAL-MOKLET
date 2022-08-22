@@ -22,3 +22,7 @@ Jika menjalankan program saat jam pembelajaran:
 ![image](https://user-images.githubusercontent.com/66165750/185749826-d1df0050-2d0c-4f24-8c4f-f9bc3278cdcf.png)
 
 Terimakasih ~~
+
+## Change log:
+> 22/08/2022:
+- Fixed bug
